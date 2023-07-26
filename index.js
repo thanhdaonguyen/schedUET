@@ -53,11 +53,11 @@ app.get("/schedule", (req, res) => {
     location: "Ha Noi",
     description: "A chance to hear more about Google's developer products.",
     start: {
-      dateTime: "2023-07-26T09:00:00",
+      dateTime: "2023-07-27T13:00:00",
       timeZone: "Asia/Bangkok",
     },
     end: {
-      dateTime: "2023-07-26T17:00:00",
+      dateTime: "2023-07-27T18:00:00",
       timeZone: "Asia/Bangkok",
     },
   };
