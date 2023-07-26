@@ -29,6 +29,9 @@ app.get("/google", (req, res) => {
     access_type: "offline",
     scope: scopes,
   });
+  setTimeout(() => {
+    
+  }, 300);
   res.redirect(url);
 });
 
