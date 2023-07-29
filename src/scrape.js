@@ -5,7 +5,6 @@ const data = document.querySelectorAll("body font form table tbody tr");
 const dataArray = [];
 for (i = 3; i < data.length; i++) {
   const dataUnit = data[i].querySelectorAll("td");
-
   //manage time
   let start;
   let end;
@@ -25,23 +24,37 @@ for (i = 3; i < data.length; i++) {
     group = Number(dataUnit[11].textContent);
   }
 
-  //create data
-  const newData = {
-    title: dataUnit[2].textContent,
-    code: dataUnit[4].textContent,
-    credits: Number(dataUnit[3].textContent),
-    instructor: dataUnit[5].textContent,
-    schedule: [
-      {
-        day: dataUnit[8].textContent,
-        start: start,
-        end: end,
-        group: group,
-        location: dataUnit[10].textContent,
-      },
-    ],
-  };
-  dataArray.push(newData);
+  //check value
+    const check = dataArray.findIndex((e) => e.code === dataUnit[4].textContent);
+    console.log(check)
+
+  //create new data element
+  if (check >= 0) {
+    dataArray[check].schedule.push({
+      day: dataUnit[8].textContent,
+      start: start,
+      end: end,
+      group: group,
+      location: dataUnit[10].textContent,
+    });
+  } else {
+    const newData = {
+      title: dataUnit[2].textContent,
+      code: dataUnit[4].textContent,
+      credits: Number(dataUnit[3].textContent),
+      instructor: dataUnit[5].textContent,
+      schedule: [
+        {
+          day: dataUnit[8].textContent,
+          start: start,
+          end: end,
+          group: group,
+          location: dataUnit[10].textContent,
+        },
+      ],
+    };
+    dataArray.push(newData);
+  }
 }
 console.log(typeof dataArray);
 const jsonString = JSON.stringify(dataArray);
