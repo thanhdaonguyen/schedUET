@@ -1,13 +1,14 @@
+//modules
 const express = require("express");
 const { google } = require("googleapis");
-
 const dotenv = require("dotenv");
-const { log } = require("console");
 dotenv.config();
 
 //server
 const app = express();
 const PORT = process.env.ENV_PORT || 8000;
+
+//Authentication
 const oauth2Client = new google.auth.OAuth2(
   process.env.CLIENT_ID,
   process.env.CLIENT_SECRET,
@@ -19,19 +20,18 @@ const calendar = google.calendar({
   version: "v3",
   auth: process.env.API_KEY,
 });
-
 const scopes = ["https://www.googleapis.com/auth/calendar"];
 
-//ROUTES
-app.get("/google", (req, res) => {
+//middleware
+app.use("/asset", express.static("./asset"));
 
+//ROUTES
+
+app.get("/google", (req, res) => {
   const url = oauth2Client.generateAuthUrl({
     access_type: "offline",
     scope: scopes,
   });
-  setTimeout(() => {
-    
-  }, 300);
   res.redirect(url);
 });
 
@@ -40,14 +40,12 @@ app.get("/", (req, res) => {
 });
 
 app.get("/google/redirect", async (req, res) => {
-  console.log("/google/redirect");
-  const tokens = oauth2Client.getToken(req.query.code);
-  tokens.then((data) => {
+  const tokenPromise = oauth2Client.getToken(req.query.code);
+  tokenPromise.then((data) => {
+    console.log({ data: data });
     oauth2Client.setCredentials(data.tokens);
-  });
-  setTimeout(() => {
     res.redirect("/schedule");
-  }, 500);
+  });
 });
 
 app.get("/schedule", (req, res) => {
@@ -64,7 +62,7 @@ app.get("/schedule", (req, res) => {
       timeZone: "Asia/Bangkok",
     },
   };
-  log(oauth2Client);
+  console.log({ oauth2Client: oauth2Client });
   calendar.events.insert(
     {
       auth: oauth2Client,
@@ -81,7 +79,7 @@ app.get("/schedule", (req, res) => {
       console.log("Event created: %s", event.htmlLink);
     }
   );
-  res.redirect('/google');
+  res.redirect("/google");
 });
 
 app.listen(PORT, () => {
