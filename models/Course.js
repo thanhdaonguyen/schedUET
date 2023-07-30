@@ -4,15 +4,6 @@ const Schedule = new mongoose.Schema({
   day: {
     type: String,
     required: [true, "must provide day time"],
-    enum: [
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-      "Sunday",
-    ],
   },
   start: {
     type: Number,

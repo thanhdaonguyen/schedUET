@@ -49,6 +49,7 @@ app.get("/google/redirect", async (req, res) => {
 });
 
 app.get("/schedule", (req, res) => {
+  
   const event = {
     summary: "Google I/O 2023",
     location: "Ha Noi",
