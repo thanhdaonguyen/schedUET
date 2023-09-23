@@ -20,7 +20,7 @@ const calendar = google.calendar({
   version: "v3",
   auth: process.env.API_KEY,
 });
-const scopes = ["https://www.googleapis.com/auth/calendar"];
+const scopes = ["https://www.googleapis.com/auth/calendar", "https://www.googleapis.com/auth/userinfo.profile"];
 
 //middleware
 app.use("/asset", express.static("./asset"));
@@ -42,9 +42,9 @@ app.get("/", (req, res) => {
 app.get("/google/redirect", async (req, res) => {
   const tokenPromise = oauth2Client.getToken(req.query.code);
   tokenPromise.then((data) => {
-    console.log({ data: data });
     oauth2Client.setCredentials(data.tokens);
-    res.redirect("/schedule");
+    console.log({oauth})
+    res.redirect("/google");
   });
 });
 
